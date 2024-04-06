@@ -1,0 +1,50 @@
+name: Build
+on:
+    push:
+    workflow_dispatch:
+
+jobs:
+    build-common:
+        name: build
+        runs-on: ubuntu-latest
+        steps:
+            - name: Pull Git Repo
+              uses: actions/checkout@v4
+            - name: Setup JDK 8
+              uses: actions/setup-java@v3
+              with:
+                java-version: '8'
+                cache: 'gradle'
+                java-package: 'jdk'
+                distribution: 'liberica'
+            - name: Build dotJar files
+              run: |
+                export GIT_COMMIT_DESC=$(git log --format=%B -n 1 $GITHUB_SHA)
+                ./gradlew clean build --stacktrace
+            - name: "Delete CI Release"
+              uses: 8Mi-Tech/delete-release-assets-action@main
+              with:
+                github_token: ${{ secrets.GITHUB_TOKEN }}
+                tag: CI-Build
+                deleteOnlyFromDrafts: false
+            - name: Set CI Release Text
+              run: |
+                cat > build/ci-build.md << 'EOF'
+                Build Time / 构建时间 : ${date}
+                自动同步分支 ${{ github.ref_name }} 的代码，以保持最新
+                Synchronize ${{ github.ref_name }} branch code updates, keeping only the latest version
+                EOF
+            -
+              name: "Upload CI Release Tag"
+              uses: richardsimko/update-tag@v1.0.7
+              with:
+                tag_name: CI-Build
+            -
+              name: "Publish to CI Release"
+              uses: softprops/action-gh-release@v1
+              with:
+                name: CI Release Build
+                tag_name: CI-Build
+                prerelease: true
+                body_path: build/ci-build.md
+                files: build/libs/*
