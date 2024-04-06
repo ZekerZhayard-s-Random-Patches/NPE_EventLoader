@@ -25,13 +25,12 @@ jobs:
             - name: "Delete CI Release"
               uses: 8Mi-Tech/delete-release-assets-action@main
               with:
-                github_token: ${{ secrets.GITHUB_TOKEN }}
                 tag: CI-Build
                 deleteOnlyFromDrafts: false
             - name: Set CI Release Text
               run: |
                 cat > build/ci-build.md << 'EOF'
-                Build Time / 构建时间 : ${date}
+                Build Time / 构建时间 : $(date)
                 自动同步分支 ${{ github.ref_name }} 的代码，以保持最新
                 Synchronize ${{ github.ref_name }} branch code updates, keeping only the latest version
                 EOF
