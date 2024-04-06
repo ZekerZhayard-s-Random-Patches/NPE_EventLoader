@@ -20,7 +20,11 @@ jobs:
               run: |
                 export GIT_COMMIT_DESC=$(git log --format=%B -n 1 $GITHUB_SHA)
                 ./gradlew clean build --stacktrace
-            - name: "Delete CI Release"
+            - name: "CI Release Var"
+              id: github-text
+              run: |
+                echo "build_time=$(TZ=Asia/Shanghai date "+%Y.%m.%d %H:%M")" >> $GITHUB_OUTPUT
+            - name: Delete CI Release
               uses: 8Mi-Tech/delete-release-assets-action@main
               with:
                 github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -28,8 +32,9 @@ jobs:
                 deleteOnlyFromDrafts: false
             - name: Set CI Release Text
               run: |
+                
                 cat > build/ci-build.md << 'EOF'
-                Build Time / 构建时间 : ${date}
+                Build Time / 构建时间 : ${{ steps.github-text.outputs.build_time }}
                 自动同步分支 ${{ github.ref_name }} 的代码，以保持最新
                 Synchronize ${{ github.ref_name }} branch code updates, keeping only the latest version
                 EOF
