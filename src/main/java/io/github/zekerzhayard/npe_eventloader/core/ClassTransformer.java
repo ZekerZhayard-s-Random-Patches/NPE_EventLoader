@@ -9,6 +9,7 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.JumpInsnNode;
 import org.objectweb.asm.tree.LabelNode;
+import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
@@ -24,6 +25,16 @@ public class ClassTransformer implements IClassTransformer {
                     for (AbstractInsnNode ain : mn.instructions.toArray()) {
                         if (ain.getOpcode() == Opcodes.GETFIELD) {
                             FieldInsnNode fin = (FieldInsnNode) ain;
+
+                            if (RemapUtils.checkClassName(fin.owner, "net/minecraft/client/Minecraft") && RemapUtils.checkFieldName(fin.owner, fin.name, fin.desc, "field_71441_e") && RemapUtils.checkFieldDesc(fin.desc, "Lnet/minecraft/client/multiplayer/WorldClient;")) {
+                                mn.instructions.insertBefore(fin, new VarInsnNode(Opcodes.ALOAD, 1));
+                                mn.instructions.set(fin, new MethodInsnNode(Opcodes.INVOKESTATIC, "io/github/zekerzhayard/npe_eventloader/Hook", "getWorld", "(Lnet/minecraft/client/Minecraft;Lnet/minecraftforge/fml/common/gameevent/TickEvent$WorldTickEvent;)Lnet/minecraft/world/World;", false));
+                            }
+
+                            if (RemapUtils.checkClassName(fin.owner, "net/minecraft/client/multiplayer/WorldClient") && RemapUtils.checkFieldName(fin.owner, fin.name, fin.desc, "field_73010_i") && RemapUtils.checkFieldDesc(fin.desc, "Ljava/util/List;")) {
+                                fin.owner = "net/minecraft/world/World";
+                            }
+
                             if (RemapUtils.checkClassName(fin.owner, "com/trhsy/sim/npcCode/NpcData") && RemapUtils.checkFieldName(fin.owner, fin.name, fin.desc, "entity") && RemapUtils.checkFieldDesc(fin.desc, "Lcom/trhsy/sim/entity/EntityFolk;")) {
                                 ordinal++;
                                 if (ordinal == 2) {
@@ -40,6 +51,11 @@ public class ClassTransformer implements IClassTransformer {
                                     mn.instructions.insertBefore(ain, new VarInsnNode(ain0.getOpcode(), ((VarInsnNode) ain0).var));
                                     break;
                                 }
+                            }
+                        } else if (ain instanceof MethodInsnNode) {
+                            MethodInsnNode min = (MethodInsnNode) ain;
+                            if (min.owner.equals("net/minecraft/client/multiplayer/WorldClient")) {
+                                min.owner = "net/minecraft/world/World";
                             }
                         }
                     }
