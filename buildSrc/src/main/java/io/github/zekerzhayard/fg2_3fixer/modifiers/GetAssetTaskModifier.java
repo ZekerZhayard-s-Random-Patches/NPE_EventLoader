@@ -1,4 +1,4 @@
-package io.github.zekerzhayard.npe_eventloader.gradle.unsafe.modifiers;
+package io.github.zekerzhayard.fg2_3fixer.modifiers;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;

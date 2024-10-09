@@ -1,4 +1,4 @@
-package io.github.zekerzhayard.npe_eventloader.gradle.unsafe;
+package io.github.zekerzhayard.fg2_3fixer;
 
 import java.lang.invoke.MethodHandle;
 import java.net.URLClassLoader;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.jar.JarFile;
 
-import io.github.zekerzhayard.npe_eventloader.gradle.unsafe.modifiers.IClassModifier;
+import io.github.zekerzhayard.fg2_3fixer.modifiers.IClassModifier;
 
 @SuppressWarnings("sunapi")
 public class ClassModifierManager {

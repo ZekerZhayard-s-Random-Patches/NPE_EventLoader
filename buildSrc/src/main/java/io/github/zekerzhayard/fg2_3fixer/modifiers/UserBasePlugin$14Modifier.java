@@ -1,4 +1,4 @@
-package io.github.zekerzhayard.npe_eventloader.gradle.unsafe.modifiers;
+package io.github.zekerzhayard.fg2_3fixer.modifiers;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
@@ -24,7 +24,7 @@ public class UserBasePlugin$14Modifier implements IClassModifier {
                     if (ain.getOpcode() == Opcodes.INVOKEVIRTUAL) {
                         MethodInsnNode min = (MethodInsnNode) ain;
                         if (min.owner.equals("java/io/File") && min.name.equals("exists") && min.desc.equals("()Z")) {
-                            mn.instructions.insertBefore(ain, new MethodInsnNode(Opcodes.INVOKESTATIC, "io/github/zekerzhayard/npe_eventloader/gradle/unsafe/modifiers/hooks/UserBasePluginHook", "createWorkspaceXml", "(Ljava/io/File;)Ljava/io/File;", false));
+                            mn.instructions.insertBefore(ain, new MethodInsnNode(Opcodes.INVOKESTATIC, "io/github/zekerzhayard/fg2_3fixer/modifiers/hooks/UserBasePluginHook", "createWorkspaceXml", "(Ljava/io/File;)Ljava/io/File;", false));
                             break;
                         }
                     }

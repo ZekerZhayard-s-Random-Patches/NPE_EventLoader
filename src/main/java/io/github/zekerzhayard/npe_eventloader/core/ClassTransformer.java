@@ -21,7 +21,7 @@ public class ClassTransformer implements IClassTransformer {
             new ClassReader(basicClass).accept(cn, ClassReader.EXPAND_FRAMES);
             for (MethodNode mn : cn.methods) {
                 if (RemapUtils.checkMethodName(cn.name, mn.name, mn.desc, "worldTick") && RemapUtils.checkMethodDesc(mn.desc, "(Lnet/minecraftforge/fml/common/gameevent/TickEvent$WorldTickEvent;)V")) {
-                    int ordinal = 0;
+                    int ordinal = 0, raceOrdinal = 0;
                     for (AbstractInsnNode ain : mn.instructions.toArray()) {
                         if (ain.getOpcode() == Opcodes.GETFIELD) {
                             FieldInsnNode fin = (FieldInsnNode) ain;
@@ -50,6 +50,13 @@ public class ClassTransformer implements IClassTransformer {
                                     mn.instructions.insertBefore(ain, new JumpInsnNode(Opcodes.IFNULL, ln));
                                     mn.instructions.insertBefore(ain, new VarInsnNode(ain0.getOpcode(), ((VarInsnNode) ain0).var));
                                     break;
+                                }
+                            }
+
+                            if (RemapUtils.checkClassName(fin.owner, "com/trhsy/sim/npcCode/NpcData") && RemapUtils.checkFieldName(fin.owner, fin.name, fin.desc, "race") && RemapUtils.checkFieldDesc(fin.desc, "Lcom/trhsy/sim/npcCode/race/Race;")) {
+                                raceOrdinal++;
+                                if (raceOrdinal >= 3) {
+                                    mn.instructions.insertBefore(fin, new MethodInsnNode(Opcodes.INVOKESTATIC, "io/github/zekerzhayard/npe_eventloader/Hook", "checkRace", "(Lcom/trhsy/sim/npcCode/NpcData;)Lcom/trhsy/sim/npcCode/NpcData;", false));
                                 }
                             }
                         } else if (ain instanceof MethodInsnNode) {

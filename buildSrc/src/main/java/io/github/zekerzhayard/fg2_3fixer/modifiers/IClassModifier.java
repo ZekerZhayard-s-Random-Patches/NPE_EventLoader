@@ -1,4 +1,4 @@
-package io.github.zekerzhayard.npe_eventloader.gradle.unsafe.modifiers;
+package io.github.zekerzhayard.fg2_3fixer.modifiers;
 
 public interface IClassModifier {
     String getClassName();

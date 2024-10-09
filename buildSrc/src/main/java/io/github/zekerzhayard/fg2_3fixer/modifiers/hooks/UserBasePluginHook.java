@@ -1,10 +1,12 @@
-package io.github.zekerzhayard.npe_eventloader.gradle.unsafe.modifiers.hooks;
+package io.github.zekerzhayard.fg2_3fixer.modifiers.hooks;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 
+import com.google.common.collect.ImmutableMap;
+import net.minecraftforge.gradle.common.Constants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -39,5 +41,11 @@ public class UserBasePluginHook {
             }
         }
         return root;
+    }
+
+    public static Element addGradleBeforeRunTask(Element child) {
+        Element method = Constants.addXml(child, "method", ImmutableMap.of("v", "2"));
+        Constants.addXml(method, "option", ImmutableMap.of("name", "Gradle.BeforeRunTask", "enabled", "true", "tasks", "classes", "externalProjectPath", "$PROJECT_DIR$"));
+        return child;
     }
 }

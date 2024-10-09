@@ -1,8 +1,8 @@
-package io.github.zekerzhayard.npe_eventloader.gradle.unsafe;
+package io.github.zekerzhayard.fg2_3fixer;
 
 import java.util.ServiceLoader;
 
-import io.github.zekerzhayard.npe_eventloader.gradle.unsafe.modifiers.IClassModifier;
+import io.github.zekerzhayard.fg2_3fixer.modifiers.IClassModifier;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 

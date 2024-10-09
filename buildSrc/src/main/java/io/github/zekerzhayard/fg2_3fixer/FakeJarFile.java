@@ -1,4 +1,4 @@
-package io.github.zekerzhayard.npe_eventloader.gradle.unsafe;
+package io.github.zekerzhayard.fg2_3fixer;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

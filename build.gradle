@@ -1,5 +1,5 @@
 
-apply plugin: "io.github.zekerzhayard.${mod_id}.gradle.classmodifier"
+apply plugin: "io.github.zekerzhayard.fg2_3fixer"
 apply plugin: 'net.minecraftforge.gradle.forge'
 
 /*
@@ -19,8 +19,8 @@ compileJava {
 
 sourceSets {
     main {
-        output.resourcesDir = file('build/combined')
-        java.outputDir = file('build/combined')
+        output.resourcesDir = file('build/classes/java/api')
+        java.outputDir = file('build/classes/java/api')
     }
 }
 
@@ -69,7 +69,7 @@ dependencies {
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-    deobfCompile "4968:451:simulated-1.12.2-1.0.4 Beta"
+    deobfCompile "5664:4:simulated-1.12.2-1.0.6 Beta"
 }
 
 processResources {
